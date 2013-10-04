@@ -52,35 +52,38 @@ int main(){
 	
 	std::string string, tmp;
 	while(std::cin >> tmp) string += tmp;
-	for(int i = 0; i < 26; ++i){
-		double count = 0;
-		std::unordered_map<char, double> freq;
-		for(char& c : string){
-			if(c >= 'a' && c <= 'z'){
-				char x = rol(c, i);
-				if(freq.count(x) == 0) freq[x] = 1;
-				else ++freq[x];
-				++count;
+	if(string.size() > 0){
+		for(int i = 0; i < 26; ++i){
+			double count = 0;
+			std::unordered_map<char, double> freq;
+			for(auto& entry : ref){
+				freq[entry.first] = 0;
 			}
+			for(char& c : string){
+				if(c >= 'a' && c <= 'z'){
+					char x = rol(c, i);
+					++freq[x];
+					++count;
+				}
+			}
+			
+			double delta = 0;
+			for(auto& entry : freq){
+				double tmp = entry.second;
+				tmp = tmp / count - ref[entry.first];
+				delta += tmp * tmp ;
+			}
+			std::cout << i << ": " << sqrt(delta) << std::endl;
+			delta_m.insert(std::pair<double, uint>(sqrt(delta), i));
 		}
 		
-		double delta = 0;
-		for(auto& entry : ref){
-			double tmp = 0;
-			if(freq.find(entry.first) != freq.end()) tmp = freq.find(entry.first)->second;
-			tmp = tmp / count - entry.second;
-			delta += tmp * tmp ;
+		for(auto& entry : delta_m){
+			std::cout << entry.second << ": ";
+			for(char& c : string){
+				if(c >= 'a' && c <= 'z') std::cout << rol(c, entry.second);
+			}
+			std::cout << std::endl;
 		}
-		std::cout << i << ": " << sqrt(delta) << std::endl;
-		delta_m.insert(std::pair<double, uint>(sqrt(delta), i));
-	}
-	
-	for(auto& entry : delta_m){
-		std::cout << entry.second << ": ";
-		for(char& c : string){
-			if(c >= 'a' && c <= 'z') std::cout << rol(c, entry.second);
-		}
-		std::cout << std::endl;
 	}
 	return 0;
 }
