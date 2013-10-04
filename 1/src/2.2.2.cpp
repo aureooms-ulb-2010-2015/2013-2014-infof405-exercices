@@ -81,6 +81,7 @@ int main(){
 			std::cout << entry.second << ": ";
 			for(char& c : string){
 				if(c >= 'a' && c <= 'z') std::cout << rol(c, entry.second);
+				else std::cout << ' ';
 			}
 			std::cout << std::endl;
 		}
